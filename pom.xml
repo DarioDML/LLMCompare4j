@@ -38,18 +38,11 @@
         </dependency>
 
         <!-- Spring AI -->
-        <!-- https://mvnrepository.com/artifact/org.springframework.ai/spring-ai -->
+        <!-- https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-ollama-spring-boot-starter -->
         <dependency>
             <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai</artifactId>
+            <artifactId>spring-ai-ollama-spring-boot-starter</artifactId>
             <version>1.0.0-M6</version>
-            <type>pom</type>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-ollama -->
-        <dependency>
-            <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-ollama</artifactId>
-            <version>1.1.0</version>
         </dependency>
 
         <!-- JFreeChart -->
