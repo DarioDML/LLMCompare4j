@@ -1,7 +1,6 @@
 package io.github.dariodml.llmcompare4j;
 
 import dev.langchain4j.model.ollama.OllamaChatModel;
-import dev.langchain4j.exception.ModelNotFoundException;
 import org.openjdk.jmh.annotations.*;
 
 public class LangChain4jChatBenchmark extends AbstractChatBenchmark {

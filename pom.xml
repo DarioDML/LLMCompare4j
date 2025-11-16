@@ -37,12 +37,19 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Spring AI -->
-        <!-- https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-ollama-spring-boot-starter -->
+        <!-- Spring AI starters for models -->
+        <!-- Recommended starter for Ollama model (auto-configuration) -->
         <dependency>
             <groupId>org.springframework.ai</groupId>
-            <artifactId>spring-ai-ollama-spring-boot-starter</artifactId>
-            <version>1.0.0-M6</version>
+            <artifactId>spring-ai-starter-model-ollama</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+        <!-- Required for manual Ollama API and chat model creation -->
+        <!-- Use low-level api too (manual creation of Model if needed) -->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-ollama</artifactId>
+            <version>1.1.0</version>
         </dependency>
 
         <!-- JFreeChart -->
