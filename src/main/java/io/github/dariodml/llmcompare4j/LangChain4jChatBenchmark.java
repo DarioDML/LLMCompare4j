@@ -3,22 +3,19 @@ package io.github.dariodml.llmcompare4j;
 import dev.langchain4j.model.ollama.OllamaChatModel;
 import org.openjdk.jmh.annotations.*;
 
+@State(Scope.Thread)
 public class LangChain4jChatBenchmark extends AbstractChatBenchmark {
 
     private OllamaChatModel model;
     private String activeModelName;
 
-    private OllamaChatModel createModel(String modelName) {
-        return OllamaChatModel.builder()
+    @Setup(Level.Trial)
+    public void setupModel() {
+        model = OllamaChatModel.builder()
                 .baseUrl("http://localhost:11434")
                 .modelName(modelName)
                 .temperature(0.7)
                 .build();
-    }
-
-    @Setup(Level.Invocation)
-    public void setupModel() {
-        model = createModel(modelName);
         activeModelName = modelName;
     }
 
@@ -31,8 +28,7 @@ public class LangChain4jChatBenchmark extends AbstractChatBenchmark {
     public String chat(String prompt, String modelName) {
         // Lazily initialize the model when calling from outside of JMH runs
         if (model == null || activeModelName == null || !activeModelName.equals(modelName)) {
-            model = createModel(modelName);
-            activeModelName = modelName;
+            setupModel(); // Re-use setup logic if lazy loading needed
         }
         return model.chat(prompt);
     }
