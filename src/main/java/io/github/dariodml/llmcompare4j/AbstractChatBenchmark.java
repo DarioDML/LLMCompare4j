@@ -2,7 +2,7 @@ package io.github.dariodml.llmcompare4j;
 
 import org.openjdk.jmh.annotations.*;
 
-@State(Scope.Thread)
+//@State(Scope.Thread)
 public abstract class AbstractChatBenchmark {
 
     @Param({
