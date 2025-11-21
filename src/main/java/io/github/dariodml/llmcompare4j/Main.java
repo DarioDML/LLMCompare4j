@@ -1,15 +1,17 @@
 package io.github.dariodml.llmcompare4j;
 
+import org.openjdk.jmh.runner.Runner;
+import org.openjdk.jmh.runner.RunnerException;
+import org.openjdk.jmh.runner.options.Options;
+import org.openjdk.jmh.runner.options.OptionsBuilder;
+
 public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello, LLM Compare 4J!");
-        LangChain4jChatBenchmark langChainBenchmark = new LangChain4jChatBenchmark();
-        SpringAiChatBenchmark springAiChatBenchmark = new SpringAiChatBenchmark();
+    public static void main(String[] args) throws RunnerException {
+        Options opt = new OptionsBuilder()
+                // Regex om alles te runnen dat eindigt op 'ChatBenchmark'
+                .include(".*ChatBenchmark.*")
+                .build();
 
-        String response = langChainBenchmark.chat("Hoeveel is 2 + 2?", "llama3.2");
-        System.out.println("LangChain4J response: " + response);
-
-        String springResponse = springAiChatBenchmark.chat("Hoeveel is 2 + 2?", "llama3.2");
-        System.out.println("Spring AI response: " + springResponse);
+        new Runner(opt).run();
     }
 }
