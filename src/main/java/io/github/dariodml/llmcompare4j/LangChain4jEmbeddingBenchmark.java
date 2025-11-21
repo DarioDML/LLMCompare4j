@@ -17,12 +17,10 @@ import java.util.concurrent.TimeUnit;
 public class LangChain4jEmbeddingBenchmark extends AbstractEmbeddingBenchmark {
 
     private EmbeddingModel model;
-    private String activeModelName;
 
-    @Setup(Level.Trial)
+    @Setup(Level.Iteration)
     public void setupModel() {
         model = createModel(modelName);
-        activeModelName = modelName;
     }
 
     private EmbeddingModel createModel(String name) {
@@ -47,10 +45,7 @@ public class LangChain4jEmbeddingBenchmark extends AbstractEmbeddingBenchmark {
 
     @Override
     public Object embed(String text, String modelName) {
-        if (model == null || !activeModelName.equals(modelName)) {
-            this.model = createModel(modelName);
-            this.activeModelName = modelName;
-        }
+        // Model is already initialized in setupModel(), ensuring pure benchmarking of the embed call
         return model.embed(text);
     }
 }

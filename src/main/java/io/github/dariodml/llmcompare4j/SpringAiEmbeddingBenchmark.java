@@ -16,12 +16,10 @@ import java.util.concurrent.TimeUnit;
 public class SpringAiEmbeddingBenchmark extends AbstractEmbeddingBenchmark {
 
     private OllamaEmbeddingModel model;
-    private String activeModelName;
 
-    @Setup(Level.Trial)
+    @Setup(Level.Iteration)
     public void setupModel() {
         model = createModel(modelName);
-        activeModelName = modelName;
     }
 
     private OllamaEmbeddingModel createModel(String name) {
@@ -46,10 +44,7 @@ public class SpringAiEmbeddingBenchmark extends AbstractEmbeddingBenchmark {
 
     @Override
     public Object embed(String text, String modelName) {
-        if (model == null || !activeModelName.equals(modelName)) {
-            this.model = createModel(modelName);
-            this.activeModelName = modelName;
-        }
+        // Model is already initialized in setupModel(), ensuring pure benchmarking of the embed call
         return model.embed(text);
     }
 }
