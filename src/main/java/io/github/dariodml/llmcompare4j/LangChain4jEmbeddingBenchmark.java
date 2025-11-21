@@ -25,10 +25,10 @@ public class LangChain4jEmbeddingBenchmark extends AbstractEmbeddingBenchmark {
 
     private EmbeddingModel createModel(String name) {
         // LangChain4j Special Feature: Run All-MiniLM in-process (Pure Java/ONNX)
-        // This avoids the HTTP overhead of Ollama for this specific model.
-        if (name.startsWith("all-minilm")) {
-            return new AllMiniLmL6V2QuantizedEmbeddingModel();
-        }
+        // This avoids the HTTP overhead of Ollama for this specific model. Much faster than MiniLm with Ollama.
+//        if (name.startsWith("all-minilm")) {
+//            return new AllMiniLmL6V2QuantizedEmbeddingModel();
+//        }
 
         // For other models (like bge-m3), use Ollama
         return OllamaEmbeddingModel.builder()
