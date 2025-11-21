@@ -33,7 +33,6 @@
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j-embeddings-all-minilm-l6-v2-q</artifactId>
             <version>1.8.0-beta15</version>
-            <scope>test</scope>
         </dependency>
 
         <!-- Spring AI starters for models -->
@@ -50,6 +49,7 @@
             <artifactId>spring-ai-ollama</artifactId>
             <version>1.1.0</version>
         </dependency>
+
 
         <!-- JFreeChart -->
         <!-- https://mvnrepository.com/artifact/org.jfree/jfreechart -->
