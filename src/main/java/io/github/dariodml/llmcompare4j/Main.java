@@ -12,8 +12,9 @@ public class Main {
     public static void main(String[] args) throws RunnerException {
         // 1. Configureer de benchmark
         Options opt = new OptionsBuilder()
-                // Run alle benchmarks die 'ChatBenchmark' in de naam hebben
-                .include(".*ChatBenchmark.*")
+ 
+                // Include both Chat and Embedding benchmarks
+                .include(".*(Chat|Embedding)Benchmark.*")
                 .build();
 
         // 2. Run de benchmark en VANG DE RESULTATEN OP in een variabele

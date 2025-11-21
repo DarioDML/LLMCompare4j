@@ -11,7 +11,7 @@ public abstract class AbstractChatBenchmark {
     })
     public String prompt;
 
-    @Param({"llama3.2", "mistral", "phi3", "codellama"})
+    @Param({"llama3.2", "mistral", "codellama"}) //"phi3" is too large for most setups
     public String modelName;
 
     public abstract String chat(String prompt, String modelName);
