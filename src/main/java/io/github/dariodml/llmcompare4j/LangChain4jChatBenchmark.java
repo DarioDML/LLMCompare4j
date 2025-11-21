@@ -29,8 +29,8 @@ public class LangChain4jChatBenchmark extends AbstractChatBenchmark {
 
     @Setup(Level.Trial)
     public void setupModel() {
-        this.model = createModel(this.modelName);
-        this.activeModelName = this.modelName;
+        model = createModel(modelName);
+        activeModelName = modelName;
     }
 
     @Benchmark
