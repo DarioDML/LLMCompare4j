@@ -37,7 +37,7 @@ public class SpringAiChatBenchmark extends AbstractChatBenchmark {
 				.build();
 	}
 
-	@Setup(Level.Invocation)
+	@Setup(Level.Trial)
 	public void setupModel() {
 		model = createModel(modelName);
 		activeModelName = modelName;

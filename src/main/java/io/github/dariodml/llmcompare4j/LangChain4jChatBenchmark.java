@@ -18,15 +18,19 @@ public class LangChain4jChatBenchmark extends AbstractChatBenchmark {
     private OllamaChatModel model;
     private String activeModelName;
 
-    @Setup(Level.Trial)
-    public void setupModel() {
-        model = OllamaChatModel.builder()
+    private OllamaChatModel createModel(String modelNameToUse) {
+        return OllamaChatModel.builder()
                 .baseUrl("http://localhost:11434")
-                .modelName(modelName)
+                .modelName(modelNameToUse)
                 .temperature(0.7)
                 .timeout(Duration.ofMinutes(5))
                 .build();
-        activeModelName = modelName;
+    }
+
+    @Setup(Level.Trial)
+    public void setupModel() {
+        this.model = createModel(this.modelName);
+        this.activeModelName = this.modelName;
     }
 
     @Benchmark
@@ -38,7 +42,8 @@ public class LangChain4jChatBenchmark extends AbstractChatBenchmark {
     public String chat(String prompt, String modelName) {
         // Lazily initialize the model when calling from outside of JMH runs
         if (model == null || activeModelName == null || !activeModelName.equals(modelName)) {
-            setupModel(); // Re-use setup logic if lazy loading needed
+            this.model = createModel(modelName);
+            this.activeModelName = modelName;
         }
         return model.chat(prompt);
     }
