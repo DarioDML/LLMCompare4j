@@ -15,6 +15,7 @@
 
         <!-- Versions -->
         <langchain4j.version>0.35.0</langchain4j.version>
+        <langchain4j.embeddings.version>1.9.1-beta17</langchain4j.embeddings.version>
         <spring-ai.version>1.0.0</spring-ai.version>
         <jmh.version>1.37</jmh.version>
         <jfreechart.version>1.5.4</jfreechart.version>
@@ -38,7 +39,7 @@
         <dependency>
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j-embeddings-all-minilm-l6-v2-q</artifactId>
-            <version>1.9.1-beta17</version>
+            <version>${langchain4j.embeddings.version}</version>
 <!--            <scope>test</scope>-->
         </dependency>
 
