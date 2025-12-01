@@ -13,7 +13,6 @@ import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
 import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
 import org.openjdk.jmh.annotations.*;
-
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -50,7 +49,7 @@ public class LangChain4jRagBenchmark extends AbstractRagBenchmark {
         // 3. EMBEDDING STORE
         EmbeddingStore<TextSegment> embeddingStore = new InMemoryEmbeddingStore<>();
 
-        // 4. INGESTOR (Core API) - NO document splitting to match Spring AI
+        // 4. INGESTOR (Core API)
         EmbeddingStoreIngestor ingestor = EmbeddingStoreIngestor.builder()
                 .embeddingModel(embeddingModel)
                 .embeddingStore(embeddingStore)

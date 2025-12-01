@@ -4,7 +4,6 @@ import org.openjdk.jmh.annotations.*;
 import org.springframework.ai.ollama.OllamaEmbeddingModel;
 import org.springframework.ai.ollama.api.OllamaApi;
 import org.springframework.ai.ollama.api.OllamaOptions;
-
 import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.AverageTime)

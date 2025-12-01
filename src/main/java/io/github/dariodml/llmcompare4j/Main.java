@@ -11,7 +11,7 @@ import java.util.Collection;
 
 public class Main {
     public static void main(String[] args) throws RunnerException {
-        // 1. Configureer de benchmark
+        // 1. Configure the benchmark
         Options opt = new OptionsBuilder()
  
                 // Include both Chat, Embedding and Rag benchmarks
@@ -19,10 +19,10 @@ public class Main {
                 .addProfiler(GCProfiler.class)
                 .build();
 
-        // 2. Run de benchmark en VANG DE RESULTATEN OP in een variabele
+        // 2. Run the benchmark and CAPTURE THE RESULTS in a variable
         Collection<RunResult> results = new Runner(opt).run();
 
-        // 3. Genereer de grafiek met de resultaten
+        // 3. Generate the chart with the results
         BenchmarkVisualizer.createChart(results);
     }
 }
