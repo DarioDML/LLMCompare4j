@@ -44,7 +44,7 @@ public class SpringAiRagBenchmark extends AbstractRagBenchmark {
 
         // 3. Embedding Model
         OllamaOptions embeddingOptions = OllamaOptions.builder()
-                .model("all-minilm")
+                .model(embeddingModelName)
                 .build();
 
         OllamaEmbeddingModel embeddingModel = OllamaEmbeddingModel.builder()
@@ -71,10 +71,7 @@ public class SpringAiRagBenchmark extends AbstractRagBenchmark {
 
     @Override
     public String rag(String prompt, String modelName) {
-        // FIX: Manual RAG implementation avoids "QuestionAnswerAdvisor" dependency issues
-
         // 1. Retrieve relevant documents (Limit to Top 2 to match LangChain4j config)
-        // FIX: Use SearchRequest.builder() as 'query' field is private/inaccessible
         List<Document> similarDocs = vectorStore.similaritySearch(
                 SearchRequest.builder()
                         .query(prompt)
@@ -83,7 +80,6 @@ public class SpringAiRagBenchmark extends AbstractRagBenchmark {
         );
 
         // 2. Combine context
-        // FIX: Use getText() instead of getContent()
         String context = similarDocs.stream()
                 .map(Document::getText)
                 .collect(Collectors.joining("\n"));

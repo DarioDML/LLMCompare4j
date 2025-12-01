@@ -15,6 +15,9 @@ public abstract class AbstractRagBenchmark {
     @Param({"llama3.2", "mistral"})
     public String modelName;
 
+    @Param({"all-minilm", "bge-m3"})
+    public String embeddingModelName;
+
     // The knowledge base we will ingest into the Vector Store
     protected final List<String> documents = List.of(
             "Java is a high-level, class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible.",

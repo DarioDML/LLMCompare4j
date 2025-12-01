@@ -48,7 +48,7 @@ public class LangChain4jRagBenchmark extends AbstractRagBenchmark {
         // 2. EMBEDDING MODEL
         EmbeddingModel embeddingModel = OllamaEmbeddingModel.builder()
                 .baseUrl("http://localhost:11434")
-                .modelName("all-minilm")
+                .modelName(embeddingModelName)
                 .build();
 
         // 3. EMBEDDING STORE
@@ -68,7 +68,6 @@ public class LangChain4jRagBenchmark extends AbstractRagBenchmark {
         ingestor.ingest(docs);
 
         // 5. CONTENT RETRIEVER (Core API)
-        // Note: The package 'dev.langchain4j.rag.content.retriever' is correct for 1.8.0
         ContentRetriever contentRetriever = EmbeddingStoreContentRetriever.builder()
                 .embeddingStore(embeddingStore)
                 .embeddingModel(embeddingModel)
@@ -78,7 +77,7 @@ public class LangChain4jRagBenchmark extends AbstractRagBenchmark {
 
         // 6. AI SERVICE
         this.assistant = AiServices.builder(Assistant.class)
-                .chatLanguageModel(chatModel) // If this fails, try .chatModel(chatModel)
+                .chatLanguageModel(chatModel)
                 .contentRetriever(contentRetriever)
                 .chatMemory(MessageWindowChatMemory.withMaxMessages(10))
                 .build();
