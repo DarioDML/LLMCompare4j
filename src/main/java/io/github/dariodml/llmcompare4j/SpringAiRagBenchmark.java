@@ -34,7 +34,7 @@ public class SpringAiRagBenchmark extends AbstractRagBenchmark {
         // 2. Chat Model
         OllamaOptions chatOptions = OllamaOptions.builder()
                 .model(modelName)
-                .temperature(0.0) // Deterministic output
+                .temperature(0.7)
                 .build();
 
         this.chatModel = OllamaChatModel.builder()

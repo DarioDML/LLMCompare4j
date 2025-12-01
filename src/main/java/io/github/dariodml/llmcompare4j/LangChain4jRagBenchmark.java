@@ -41,7 +41,7 @@ public class LangChain4jRagBenchmark extends AbstractRagBenchmark {
         ChatLanguageModel chatModel = OllamaChatModel.builder()
                 .baseUrl("http://localhost:11434")
                 .modelName(modelName)
-                .temperature(0.0)
+                .temperature(0.7)
                 .timeout(Duration.ofMinutes(2))
                 .build();
 
