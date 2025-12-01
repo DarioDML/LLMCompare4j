@@ -5,14 +5,18 @@ import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.CategoryLabelPositions;
+import org.jfree.chart.labels.StandardCategoryItemLabelGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.DefaultCategoryDataset;
-import org.openjdk.jmh.results.RunResult;
 import org.openjdk.jmh.results.Result;
+import org.openjdk.jmh.results.RunResult;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Collection;
 import java.awt.*; // for Font
 import java.util.HashMap;
@@ -21,7 +25,6 @@ import java.util.Map;
 public class BenchmarkVisualizer {
 
     public static void createChart(Collection<RunResult> results) {
-        // Separate datasets for Chat and Embedding because their time scales differ significantly
         // Maak datasets aan voor alle categorieën
         Map<String, DefaultCategoryDataset> datasets = new HashMap<>();
         datasets.put("Chat", new DefaultCategoryDataset());
@@ -58,7 +61,6 @@ public class BenchmarkVisualizer {
             datasets.get(type).addValue(score, framework, category);
 
             // 3. Memory Usage toevoegen
-            // Dit komt in de 4e grafiek terecht, ongeacht of het Chat/Rag/Embedding was
             Result memoryResult = result.getSecondaryResults().get("gc.alloc.rate.norm");
             if (memoryResult != null) {
                 double memoryInMB = memoryResult.getScore() / 1024.0 / 1024.0;
@@ -81,7 +83,6 @@ public class BenchmarkVisualizer {
             } else if (type.equals("Embedding")) {
                 valueLabel = "Time (milliseconds) - Lower is better";
             } else {
-                // Chat en RAG measured in seconds
                 valueLabel = "Time (seconds) - Lower is better";
             }
 
@@ -93,10 +94,23 @@ public class BenchmarkVisualizer {
                     PlotOrientation.VERTICAL,
                     true, true, false);
 
-            // TEKST SCHUIN ZETTEN (45 graden)
+            // 4. OPMAAK: Labels draaien en waardes tonen
             CategoryPlot plot = (CategoryPlot) barChart.getPlot();
+
+            // X-As labels schuin (45 graden)
             CategoryAxis domainAxis = plot.getDomainAxis();
             domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
+
+            // Waardes BOVEN op de balken tonen
+            BarRenderer renderer = (BarRenderer) plot.getRenderer();
+            renderer.setDefaultItemLabelsVisible(true);
+
+            // Formattering instellen (bijv. 2 decimalen voor Memory, 3 voor tijd)
+            DecimalFormat format = type.equals("Memory") ? new DecimalFormat("0.00") : new DecimalFormat("0.000");
+            renderer.setDefaultItemLabelGenerator(new StandardCategoryItemLabelGenerator("{2}", format));
+
+            // Zorg dat de label ook een beetje leesbaar lettertype heeft
+            renderer.setDefaultItemLabelFont(new Font("SansSerif", Font.PLAIN, 10));
 
             try {
                 File chartFile = new File("benchmark_resultaten_" + type.toLowerCase() + ".png");

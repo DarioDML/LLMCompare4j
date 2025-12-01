@@ -395,8 +395,8 @@ Edit `LangChain4jChatBenchmark.java` (apply same pattern to other benchmarks):
 
 **Recommended Configurations:**
 
-- **Quick test (5-10 min)**: `Fork(1)`, `Warmup(1, 5s)`, `Measurement(2, 5s)`
-- **Standard (30-45 min)**: `Fork(1)`, `Warmup(1, 10s)`, `Measurement(3, 10s)` ← Current
+- **Quick test (10-15 min)**: `Fork(1)`, `Warmup(1, 5s)`, `Measurement(2, 5s)`
+- **Standard (60-90 min)**: `Fork(1)`, `Warmup(1, 10s)`, `Measurement(3, 10s)` ← Current
 - **Thorough (2+ hours)**: `Fork(3)`, `Warmup(2, 15s)`, `Measurement(5, 15s)`
 
 #### Ollama Connection Settings
@@ -470,10 +470,10 @@ Benchmark Result: LangChain4jEmbeddingBenchmark.benchmarkEmbedding
   BGE-M3: 120 ms average
 
 # Generated Chart Files
-Chat-Benchmark.png              # Chat performance comparison
-Embedding-Benchmark.png         # Embedding performance comparison
-RAG-Benchmark.png               # RAG pipeline comparison
-Memory-Benchmark.png            # Memory allocation comparison
+benchmark_resultaten_chat.png       # Chat performance comparison
+benchmark_resultaten_embedding.png  # Embedding performance comparison
+benchmark_resultaten_rag.png        # RAG pipeline comparison
+benchmark_resultaten_memory.png     # Memory allocation comparison
 ```
 
 ### Advanced Usage Examples
@@ -588,20 +588,29 @@ LangChain4jEmbeddingBenchmark.benchmarkEmbedding
 **Purpose**: Measure complete Retrieval-Augmented Generation pipeline performance
 
 **Components**:
-1. **Retrieval**: Document search using embeddings
-2. **Context**: Prepare relevant document chunks
+1. **Retrieval**: Document search using embeddings (in-memory vector store)
+2. **Context**: Prepare relevant document chunks (top-2 similarity matches)
 3. **Generation**: Generate answer using retrieved context
 
 **Test Parameters**:
-- **Models**: Combinations of chat + embedding models
-- **Document Sets**: Varying sizes and complexities
+- **Chat Models**: Llama 3.2, Mistral, CodeLlama
+- **Embedding Models**: All-MiniLM, BGE-M3
+- **Test Prompts** (English):
+  1. `"What implies that Java is platform independent?"`
+  2. `"How does garbage collection work?"`
+- **Document Set**: 5 predefined Java knowledge base documents
+- **Retrieval Config**: Top-2 results, similarity threshold 0.5
 
 **Measured Metrics**:
-- **Total pipeline time** (seconds)
-- **Retrieval time**
-- **Generation time**
-- **Quality of generated answers**
-- **Memory allocation**
+- **Total pipeline time** (seconds) - from query to final answer
+- **Framework overhead** - LangChain4j vs Spring AI comparison
+- **Memory allocation per operation**
+- **GC activity**
+
+**Implementation Details**:
+- **LangChain4j**: Uses AiServices with ContentRetriever and InMemoryEmbeddingStore
+- **Spring AI**: Uses ChatClient with QuestionAnswerAdvisor and SimpleVectorStore
+- **No document splitting**: Both frameworks ingest raw 5 documents without splitting for fair comparison
 
 **Real-world Relevance**:
 - Knowledge bases and FAQ systems
@@ -615,9 +624,9 @@ LangChain4jEmbeddingBenchmark.benchmarkEmbedding
 
 ### Output Files
 
-After running benchmarks, the following charts are generated:
+After running benchmarks, the following charts are generated in PNG format with 1200x800 pixel resolution:
 
-#### 1. Chat Benchmark Chart (`Chat-Benchmark.png`)
+#### 1. Chat Benchmark Chart (`benchmark_resultaten_chat.png`)
 
 **Shows**:
 - Average response time for each framework/model/prompt combination
@@ -637,7 +646,7 @@ Llama 3.2 (Sort Java function)
 → Interpretation: LangChain4j ~10% faster for this task
 ```
 
-#### 2. Embedding Benchmark Chart (`Embedding-Benchmark.png`)
+#### 2. Embedding Benchmark Chart (`benchmark_resultaten_embedding.png`)
 
 **Shows**:
 - Embedding operation time (milliseconds)
@@ -657,14 +666,14 @@ All-MiniLM (Short text)
 → Interpretation: Both are similar; all-minilm is practical for real-time search
 ```
 
-#### 3. RAG Pipeline Chart (`RAG-Benchmark.png`)
+#### 3. RAG Pipeline Chart (`benchmark_resultaten_rag.png`)
 
 **Shows**:
 - End-to-end pipeline time
 - Component breakdown (retrieval + generation)
 - Framework scalability with document set size
 
-#### 4. Memory Usage Chart (`Memory-Benchmark.png`)
+#### 4. Memory Usage Chart (`benchmark_resultaten_memory.png`)
 
 **Shows**:
 - Memory allocated per operation (MB/op)
@@ -680,12 +689,13 @@ All-MiniLM (Short text)
 
 #### Performance Metrics Explained
 
-| Metric | Unit | Good Value | Bad Value |
-|--------|------|-----------|-----------|
-| **Average Response Time** | seconds | < 3s | > 10s |
-| **Embedding Speed** | ms | < 50ms | > 200ms |
-| **Memory Allocation** | MB/op | < 10MB | > 100MB |
-| **GC Collections** | count | < 5 | > 20 |
+| Metric | Unit | Good Value | Bad Value | Notes |
+|--------|------|-----------|-----------|-------|
+| **Chat Response Time** | seconds | < 5s | > 15s | Depends on model size |
+| **Embedding Speed** | ms | < 100ms | > 500ms | All-MiniLM is faster than BGE-M3 |
+| **RAG Pipeline Time** | seconds | < 10s | > 30s | Includes retrieval + generation |
+| **Memory Allocation** | MB/op | < 50MB | > 200MB | Can spike with large models |
+| **GC Collections** | count | < 5 | > 20 | Indicates memory pressure |
 
 #### Framework Comparison Checklist
 
@@ -703,7 +713,7 @@ To save benchmarks for documentation:
 ```bash
 # Results are already saved as PNG files
 # Copy to documentation folder
-cp *-Benchmark.png ../docs/
+cp benchmark_resultaten_*.png ../docs/
 
 # For detailed data, capture console output
 mvn exec:java -Dexec.mainClass="io.github.dariodml.llmcompare4j.Main" > benchmark_results.txt
@@ -749,10 +759,7 @@ LLMCompare4j/
 └── .gitignore                             # Git configuration
 
 # Output Files (generated after running benchmarks)
-├── Chat-Benchmark.png
-├── Embedding-Benchmark.png
-├── RAG-Benchmark.png
-└── Memory-Benchmark.png
+└── benchmark_resultaten_*.png
 ```
 
 ### Key File Descriptions
@@ -1115,8 +1122,10 @@ Result "org.example.LangChain4jChatBenchmark.benchmarkChat":
   2.173 ±(99.9%) 0.074 s/op
   
 # Chart generation
-Generating Chat-Benchmark.png...
-Generating Memory-Benchmark.png...
+Generating benchmark_resultaten_chat.png...
+Generating benchmark_resultaten_embedding.png...
+Generating benchmark_resultaten_rag.png...
+Generating benchmark_resultaten_memory.png...
 Done!
 ```
 
@@ -1204,14 +1213,14 @@ mvn -Xmx4g exec:java -Dexec.mainClass="io.github.dariodml.llmcompare4j.Main"
 
 #### 2. Runtime Issues
 
-**Problem**: Benchmarks crash with NullPointerException
+**Problem**: Benchmarks crash with NullPointerException or connection errors
 
 ```
-Exception in thread "main" java.lang.NullPointerException
-  at io.github.dariodml.llmcompare4j.LangChain4jChatBenchmark.chat()
+Exception: Unable to connect to http://localhost:11434
+java.net.ConnectException: Connection refused
 ```
 
-**Cause**: Ollama server not running or unreachable
+**Cause**: Ollama server not running, unreachable, or model not available
 
 **Solution**:
 ```bash
@@ -1286,7 +1295,7 @@ mvn -Xmx8g -XX:+UseG1GC exec:java -Dexec.mainClass="io.github.dariodml.llmcompar
 **Problem**: No chart files generated
 
 ```
-Expected: Chat-Benchmark.png, Embedding-Benchmark.png, etc.
+Expected: benchmark_resultaten_chat.png, benchmark_resultaten_embedding.png, etc.
 Actual: No files created
 ```
 

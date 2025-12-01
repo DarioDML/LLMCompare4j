@@ -11,8 +11,8 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 @State(Scope.Thread)
 @Fork(value = 1, warmups = 0)
-@Warmup(iterations = 2, time = 5)
-@Measurement(iterations = 5, time = 5)
+@Warmup(iterations = 1, time = 5)
+@Measurement(iterations = 3, time = 5)
 public class SpringAiEmbeddingBenchmark extends AbstractEmbeddingBenchmark {
 
     private OllamaEmbeddingModel model;

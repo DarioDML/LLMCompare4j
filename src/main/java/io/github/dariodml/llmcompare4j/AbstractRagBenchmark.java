@@ -12,7 +12,7 @@ public abstract class AbstractRagBenchmark {
     })
     public String prompt;
 
-    @Param({"llama3.2", "mistral"})
+    @Param({"llama3.2", "mistral", "codellama"})
     public String modelName;
 
     @Param({"all-minilm", "bge-m3"})

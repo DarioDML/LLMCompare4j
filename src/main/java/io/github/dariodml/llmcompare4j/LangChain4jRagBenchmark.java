@@ -22,8 +22,8 @@ import java.util.stream.Collectors;
 @OutputTimeUnit(TimeUnit.SECONDS)
 @State(Scope.Thread)
 @Fork(value = 1, warmups = 0)
-@Warmup(iterations = 2, time = 10, timeUnit = TimeUnit.SECONDS)
-@Measurement(iterations = 5, time = 10, timeUnit = TimeUnit.SECONDS)
+@Warmup(iterations = 1, time = 10, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 3, time = 10, timeUnit = TimeUnit.SECONDS)
 public class LangChain4jRagBenchmark extends AbstractRagBenchmark {
 
     interface Assistant {
