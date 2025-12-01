@@ -14,7 +14,7 @@ public class Main {
         Options opt = new OptionsBuilder()
  
                 // Include both Chat and Embedding benchmarks
-                .include(".*(Chat|Embedding)Benchmark.*")
+                .include(".*(Chat|Embedding|Rag)Benchmark.*")
                 .build();
 
         // 2. Run de benchmark en VANG DE RESULTATEN OP in een variabele
