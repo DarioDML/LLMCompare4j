@@ -8,6 +8,7 @@ import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.ai.ollama.OllamaEmbeddingModel;
 import org.springframework.ai.ollama.api.OllamaApi;
 import org.springframework.ai.ollama.api.OllamaOptions;
+import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.SimpleVectorStore;
 
 import java.util.List;
@@ -67,7 +68,12 @@ public class SpringAiRagBenchmark extends AbstractRagBenchmark {
         // 6. ChatClient with QuestionAnswerAdvisor (equivalent to LangChain4j's AiServices)
         this.chatClient = ChatClient.builder(chatModel)
                 .defaultAdvisors(
-                        new QuestionAnswerAdvisor(vectorStore, 2, 0.5)
+                        QuestionAnswerAdvisor.builder(vectorStore)
+                                .searchRequest(SearchRequest.builder()
+                                        .topK(2)
+                                        .similarityThreshold(0.5)
+                                        .build())
+                                .build()
                 )
                 .build();
     }
