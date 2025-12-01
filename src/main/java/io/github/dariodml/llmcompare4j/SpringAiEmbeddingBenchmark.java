@@ -3,7 +3,7 @@ package io.github.dariodml.llmcompare4j;
 import org.openjdk.jmh.annotations.*;
 import org.springframework.ai.ollama.OllamaEmbeddingModel;
 import org.springframework.ai.ollama.api.OllamaApi;
-import org.springframework.ai.ollama.api.OllamaEmbeddingOptions;
+import org.springframework.ai.ollama.api.OllamaOptions;
 
 import java.util.concurrent.TimeUnit;
 
@@ -27,7 +27,7 @@ public class SpringAiEmbeddingBenchmark extends AbstractEmbeddingBenchmark {
                 .baseUrl("http://localhost:11434")
                 .build();
 
-        OllamaEmbeddingOptions options = OllamaEmbeddingOptions.builder()
+        OllamaOptions options = OllamaOptions.builder()
                 .model(name)
                 .build();
 

@@ -3,7 +3,7 @@ package io.github.dariodml.llmcompare4j;
 import org.openjdk.jmh.annotations.*;
 import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.ai.ollama.api.OllamaApi;
-import org.springframework.ai.ollama.api.OllamaChatOptions;
+import org.springframework.ai.ollama.api.OllamaOptions;
 
 import java.util.concurrent.TimeUnit;
 
@@ -26,7 +26,7 @@ public class SpringAiChatBenchmark extends AbstractChatBenchmark {
 				.baseUrl("http://localhost:11434")
 				.build();
 
-		OllamaChatOptions defaultOptions = OllamaChatOptions.builder()
+        OllamaOptions defaultOptions = OllamaOptions.builder()
 				.model(modelName)
 				.temperature(0.7)
 				.build();

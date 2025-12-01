@@ -45,6 +45,6 @@ public class LangChain4jChatBenchmark extends AbstractChatBenchmark {
             this.model = createModel(modelName);
             this.activeModelName = modelName;
         }
-        return model.chat(prompt);
+        return model.generate(prompt);
     }
 }
