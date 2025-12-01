@@ -3,7 +3,6 @@ package io.github.dariodml.llmcompare4j;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.data.segment.TextSegment;
-import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.ollama.OllamaChatModel;
@@ -75,11 +74,10 @@ public class LangChain4jRagBenchmark extends AbstractRagBenchmark {
                 .minScore(0.5)
                 .build();
 
-        // 6. AI SERVICE
+        // 6. AI SERVICE (No chat memory to match Spring AI - pure RAG with context retrieval)
         this.assistant = AiServices.builder(Assistant.class)
                 .chatLanguageModel(chatModel)
                 .contentRetriever(contentRetriever)
-                .chatMemory(MessageWindowChatMemory.withMaxMessages(10))
                 .build();
     }
 

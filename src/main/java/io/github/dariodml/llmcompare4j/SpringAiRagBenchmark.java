@@ -1,12 +1,13 @@
 package io.github.dariodml.llmcompare4j;
 
 import org.openjdk.jmh.annotations.*;
+import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.ollama.OllamaChatModel;
 import org.springframework.ai.ollama.OllamaEmbeddingModel;
 import org.springframework.ai.ollama.api.OllamaApi;
 import org.springframework.ai.ollama.api.OllamaOptions;
-import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.SimpleVectorStore;
 
 import java.util.List;
@@ -21,7 +22,8 @@ import java.util.stream.Collectors;
 @Measurement(iterations = 3, time = 10, timeUnit = TimeUnit.SECONDS)
 public class SpringAiRagBenchmark extends AbstractRagBenchmark {
 
-    private OllamaChatModel chatModel;
+    private ChatClient chatClient;
+
     private SimpleVectorStore vectorStore;
 
     @Setup(Level.Trial)
@@ -37,7 +39,7 @@ public class SpringAiRagBenchmark extends AbstractRagBenchmark {
                 .temperature(0.7)
                 .build();
 
-        this.chatModel = OllamaChatModel.builder()
+        OllamaChatModel chatModel = OllamaChatModel.builder()
                 .ollamaApi(ollamaApi)
                 .defaultOptions(chatOptions)
                 .build();
@@ -53,7 +55,6 @@ public class SpringAiRagBenchmark extends AbstractRagBenchmark {
                 .build();
 
         // 4. Vector Store (In-Memory)
-        // FIX: Use Builder pattern instead of constructor (which is now protected)
         this.vectorStore = SimpleVectorStore.builder(embeddingModel).build();
 
         // 5. Ingest Documents
@@ -62,6 +63,13 @@ public class SpringAiRagBenchmark extends AbstractRagBenchmark {
                 .collect(Collectors.toList());
 
         this.vectorStore.add(docs);
+
+        // 6. ChatClient with QuestionAnswerAdvisor (equivalent to LangChain4j's AiServices)
+        this.chatClient = ChatClient.builder(chatModel)
+                .defaultAdvisors(
+                        new QuestionAnswerAdvisor(vectorStore, 2, 0.5)
+                )
+                .build();
     }
 
     @Benchmark
@@ -71,23 +79,10 @@ public class SpringAiRagBenchmark extends AbstractRagBenchmark {
 
     @Override
     public String rag(String prompt, String modelName) {
-        // 1. Retrieve relevant documents (Limit to Top 2 to match LangChain4j config)
-        List<Document> similarDocs = vectorStore.similaritySearch(
-                SearchRequest.builder()
-                        .query(prompt)
-                        .topK(2)
-                        .build()
-        );
-
-        // 2. Combine context
-        String context = similarDocs.stream()
-                .map(Document::getText)
-                .collect(Collectors.joining("\n"));
-
-        // 3. Stuff Prompt
-        String finalPrompt = "Context:\n" + context + "\n\nQuestion:\n" + prompt;
-
-        // 4. Call Model
-        return chatModel.call(finalPrompt);
+        // Use ChatClient with QuestionAnswerAdvisor (Spring AI's high-level RAG abstraction)
+        return chatClient.prompt()
+                .user(prompt)
+                .call()
+                .content();
     }
 }
