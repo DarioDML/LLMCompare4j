@@ -37,8 +37,9 @@
         <!-- https://mvnrepository.com/artifact/dev.langchain4j/langchain4j-embeddings-all-minilm-l6-v2-q -->
         <dependency>
             <groupId>dev.langchain4j</groupId>
-            <artifactId>langchain4j-embeddings-all-minilm-l6-v2</artifactId>
-            <version>${langchain4j.version}</version>
+            <artifactId>langchain4j-embeddings-all-minilm-l6-v2-q</artifactId>
+            <version>1.9.1-beta17</version>
+<!--            <scope>test</scope>-->
         </dependency>
 
         <!-- Spring AI starters for models -->
@@ -53,6 +54,12 @@
         <dependency>
             <groupId>org.springframework.ai</groupId>
             <artifactId>spring-ai-ollama</artifactId>
+            <version>${spring-ai.version}</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-advisors-vector-store -->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-advisors-vector-store</artifactId>
             <version>${spring-ai.version}</version>
         </dependency>
 
