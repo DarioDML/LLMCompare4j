@@ -34,7 +34,6 @@ public class LangChain4jEmbeddingBenchmark extends AbstractEmbeddingBenchmark {
         return OllamaEmbeddingModel.builder()
                 .baseUrl("http://localhost:11434")
                 .modelName(name)
-                .timeout(Duration.ofMinutes(1))
                 .build();
     }
 

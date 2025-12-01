@@ -1,7 +1,6 @@
 package io.github.dariodml.llmcompare4j;
 
 import dev.langchain4j.data.document.Document;
-import dev.langchain4j.data.document.splitter.DocumentSplitters;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
@@ -15,7 +14,6 @@ import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
 import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
 import org.openjdk.jmh.annotations.*;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -41,7 +39,6 @@ public class LangChain4jRagBenchmark extends AbstractRagBenchmark {
                 .baseUrl("http://localhost:11434")
                 .modelName(modelName)
                 .temperature(0.7)
-                .timeout(Duration.ofMinutes(2))
                 .build();
 
         // 2. EMBEDDING MODEL
@@ -53,11 +50,10 @@ public class LangChain4jRagBenchmark extends AbstractRagBenchmark {
         // 3. EMBEDDING STORE
         EmbeddingStore<TextSegment> embeddingStore = new InMemoryEmbeddingStore<>();
 
-        // 4. INGESTOR (Core API)
+        // 4. INGESTOR (Core API) - NO document splitting to match Spring AI
         EmbeddingStoreIngestor ingestor = EmbeddingStoreIngestor.builder()
                 .embeddingModel(embeddingModel)
                 .embeddingStore(embeddingStore)
-                .documentSplitter(DocumentSplitters.recursive(300, 0))
                 .build();
 
         List<Document> docs = documents.stream()

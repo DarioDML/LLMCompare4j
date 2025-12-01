@@ -2,7 +2,6 @@ package io.github.dariodml.llmcompare4j;
 
 import dev.langchain4j.model.ollama.OllamaChatModel;
 import org.openjdk.jmh.annotations.*;
-import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.AverageTime) // Change Mode to AverageTime (easier to read for slow tasks)
@@ -21,7 +20,6 @@ public class LangChain4jChatBenchmark extends AbstractChatBenchmark {
                 .baseUrl("http://localhost:11434")
                 .modelName(modelNameToUse)
                 .temperature(0.7)
-                .timeout(Duration.ofMinutes(5))
                 .build();
     }
 
