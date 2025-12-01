@@ -1486,6 +1486,33 @@ When reporting bugs, include:
 
 ---
 
+## 💻 Benchmark Results
+
+### System Specifications
+
+| Component | Specification |
+|-----------|---------------|
+| **CPU** | AMD Ryzen 9 7940HS w/ Radeon 780M Graphics |
+| **CPU Speed** | 4.00 GHz |
+| **RAM** | 16.0 GB |
+| **GPU** | NVIDIA RTX 4060 Laptop |
+
+### Benchmark Results
+
+#### Chat Performance
+![Chat Benchmark Results](benchmark_resultaten_chat.png)
+
+#### Embedding Performance
+![Embedding Benchmark Results](benchmark_resultaten_embedding.png)
+
+#### RAG Pipeline Performance
+![RAG Benchmark Results](benchmark_resultaten_rag.png)
+
+#### Memory Usage
+![Memory Benchmark Results](benchmark_resultaten_memory.png)
+
+---
+
 ## 🎓 Educational Context
 
 **Institution**: Erasmus Hogeschool Brussel  
