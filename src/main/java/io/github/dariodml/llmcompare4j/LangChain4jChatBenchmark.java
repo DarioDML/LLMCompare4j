@@ -8,8 +8,8 @@ import java.util.concurrent.TimeUnit;
 @OutputTimeUnit(TimeUnit.SECONDS) // Output time unit to Seconds
 @State(Scope.Thread)
 @Fork(value = 1, warmups = 0) // Reduce Forks to 1 to save time
-@Warmup(iterations = 1, time = 10, timeUnit = TimeUnit.SECONDS)
-@Measurement(iterations = 3, time = 10, timeUnit = TimeUnit.SECONDS)
+@Warmup(iterations = 2, time = 10, timeUnit = TimeUnit.SECONDS)
+@Measurement(iterations = 5, time = 10, timeUnit = TimeUnit.SECONDS)
 public class LangChain4jChatBenchmark extends AbstractChatBenchmark {
 
     private OllamaChatModel model;

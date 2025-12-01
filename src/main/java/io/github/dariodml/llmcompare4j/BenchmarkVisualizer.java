@@ -3,6 +3,9 @@ package io.github.dariodml.llmcompare4j;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.CategoryAxis;
+import org.jfree.chart.axis.CategoryLabelPositions;
+import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.openjdk.jmh.results.RunResult;
@@ -38,7 +41,7 @@ public class BenchmarkVisualizer {
             String framework = benchmarkClass.contains("LangChain") ? "LangChain4j" : "Spring AI";
 
             // Prompt inkorten voor leesbaarheid op de as
-            String shortPrompt = (prompt != null && prompt.length() > 15) ? prompt.substring(0, 15) + "..." : prompt;
+            String shortPrompt = (prompt != null && prompt.length() > 25) ? prompt.substring(0, 25) + "..." : prompt;
             String category = modelName + " (" + shortPrompt + ")";
 
             // 2. Type Bepalen (Chat, Embedding, of RAG)
@@ -89,6 +92,11 @@ public class BenchmarkVisualizer {
                     dataset,
                     PlotOrientation.VERTICAL,
                     true, true, false);
+
+            // TEKST SCHUIN ZETTEN (45 graden)
+            CategoryPlot plot = (CategoryPlot) barChart.getPlot();
+            CategoryAxis domainAxis = plot.getDomainAxis();
+            domainAxis.setCategoryLabelPositions(CategoryLabelPositions.UP_45);
 
             try {
                 File chartFile = new File("benchmark_resultaten_" + type.toLowerCase() + ".png");
