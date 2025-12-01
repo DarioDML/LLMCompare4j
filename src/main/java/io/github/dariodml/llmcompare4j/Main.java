@@ -1,5 +1,6 @@
 package io.github.dariodml.llmcompare4j;
 
+import org.openjdk.jmh.profile.GCProfiler;
 import org.openjdk.jmh.results.RunResult;
 import org.openjdk.jmh.runner.Runner;
 import org.openjdk.jmh.runner.RunnerException;
@@ -13,8 +14,9 @@ public class Main {
         // 1. Configureer de benchmark
         Options opt = new OptionsBuilder()
  
-                // Include both Chat and Embedding benchmarks
+                // Include both Chat, Embedding and Rag benchmarks
                 .include(".*(Chat|Embedding|Rag)Benchmark.*")
+                .addProfiler(GCProfiler.class)
                 .build();
 
         // 2. Run de benchmark en VANG DE RESULTATEN OP in een variabele
